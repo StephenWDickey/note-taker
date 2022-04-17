@@ -6,20 +6,34 @@ const fs = require('fs');
 const router = require('express').Router();
 
 // we import uuid module to create unique ids for each note
-const {v4: uuid } = require('uuid');
+const uuid = require('uuid');
 
 
 ////////////////////////////////////////////////
 
 
 // we create a get request for /notes endpoint
-router.get ('/notes', function (req, res) {
-    
-    console.log('get request sent for /notes endpoint');
+router.get("/notes", function(req, res) {
 
-    res.json({
-        message: "success!"
+    console.log(`get request sent for /notes endpoint`);
+
+    fs.readFile("./db/db.json", function (err, data) {
+
+        if (err) {
+            throw (err);
+        };
+        
+        let notes = JSON.parse(data)
+
+        return res.json(notes);
+
+        
     })
+
+    console.log(`note data retrieved`);
+
+    
+    
 
 });
 
@@ -30,26 +44,63 @@ router.post ('/notes', function(req, res) {
 
     console.log('post request sent for /notes endpoint');
 
-    res.json({
-        message: "success!"
+    let newNote = req.body;
+
+    newNote.id = uuid.v1();
+
+    // we read notes file and take data, push new note to data
+    fs.readFile("./db/db.json", "utf8", function(err, data) {
+
+        // when we readfile it becomes string, so we have to parse
+        let currentNotes = (JSON.parse(data));
+
+        currentNotes.push(newNote);
+        
+
+        // now we add new set of notes to database, but stringify it first
+        fs.writeFile("./db/db.json", JSON.stringify(currentNotes), "utf8", function(err){
+            console.log("post request sent for /notes endpoint")
+        })
     })
+
+    res.json(newNote);
 
 });
 
 
 // we create delete request based on note id with endpoint:
 // /notes/:id
-router.delete('/notes/:id', function(req, res) {
+// Deletes notes - removes from db.json and re-writes to db.json
+router.delete("/api/notes/:id", function(req, res) {
 
-    console.log('delete request');
+    // we use req.params and add id parameter
+    const id = req.params.id
 
-    res.json({
+    fs.readFile("./db/db.json",  function(err, data) {
 
-        message: "success!"
-    
+        if (err) {
+            throw (err);
+        }
+
+        const oldData = JSON.parse(data)
+
+        const newData = oldData.filter(item => {
+            if(id !== item.id){
+                return item
+            }
+        })
+
+        // we rewrite note data with new data
+        fs.writeFile("./db/db.json", JSON.stringify(newData), "utf8", function(err) {
+            if (err) {
+                throw err; 
+            }
+        })
     })
 
-});
+    console.log("note deleted.");
+
+})
 
 
 // use this for testing routes http://localhost:3001/api/notes
