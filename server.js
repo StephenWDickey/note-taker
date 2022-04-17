@@ -1,6 +1,9 @@
 // import the express module
 const express = require('express');
 // to give each note a uniqe id we can use the uuid module!
+const uuid = require('uuid');
+
+const fs = require('fs');
 
 // we need to import our api routes!
 // we can link to the dir that holds them
@@ -11,12 +14,13 @@ const htmlRoutes = require('./routes/htmlRoutes');
 
 ////////////////////////////////////////////////////
 
+// we put express function in a variable so we can chain methods to it!
+const app = express();
+
 
 // we define our PORT as a variable one for heroku or our local one 3001
 const PORT = process.env.PORT || 3001;
 
-// we put express function in a variable so we can chain methods to it!
-const app = express();
 
 
 
@@ -42,6 +46,17 @@ app.use('/api', apiRoutes);
 app.use('/', htmlRoutes);
 
 //////////////////////////////////////////////////////////////
+
+// this is a 'wildcard' route, any route that hasnt been defined
+// will be redirected to the locatio specified
+// remember: wildcard routes should come last!
+app.get('*', function(req, res) {
+    console.log ('get request sent for index.html')
+    res.sendFile(path.join(__dirname, '../../public/index.html'))
+});
+
+
+///////////////////////////////////////////////////////////////
 
 
 // this will start our express erver at the specified port

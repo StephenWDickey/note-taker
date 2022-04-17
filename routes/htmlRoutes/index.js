@@ -33,14 +33,6 @@ router.get('/notes', function (req, res) {
 });
 
 
-// this is a 'wildcard' route, any route that hasnt been defined
-// will be redirected to the locatio specified
-// remember: wildcard routes should come last!
-router.get('*', function(req, res) {
-    console.log ('get request sent for index.html')
-    res.sendFile(path.join(__dirname, '../../public/index.html'))
-});
-
 
 // remember to link to our server.js file!
 module.exports = router;

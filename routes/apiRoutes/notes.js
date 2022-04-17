@@ -23,6 +23,7 @@ router.get("/notes", function(req, res) {
             throw (err);
         };
         
+        // need to parse data after readfile
         let notes = JSON.parse(data)
 
         return res.json(notes);
@@ -46,7 +47,7 @@ router.post ('/notes', function(req, res) {
 
     let newNote = req.body;
 
-    newNote.id = uuid.v1();
+    newNote.id = uuid();
 
     // we read notes file and take data, push new note to data
     fs.readFile("./db/db.json", "utf8", function(err, data) {
@@ -79,7 +80,9 @@ router.delete("/api/notes/:id", function(req, res) {
     fs.readFile("./db/db.json",  function(err, data) {
 
         if (err) {
-            throw (err);
+
+            res.status(400).json({ error: err.message });
+            return;
         }
 
         const oldData = JSON.parse(data)
@@ -93,14 +96,14 @@ router.delete("/api/notes/:id", function(req, res) {
         // we rewrite note data with new data
         fs.writeFile("./db/db.json", JSON.stringify(newData), "utf8", function(err) {
             if (err) {
-                throw err; 
+                throw (err); 
             }
+            console.log("note deleted.");
+            
         })
     })
 
-    console.log("note deleted.");
-
-})
+});
 
 
 // use this for testing routes http://localhost:3001/api/notes
