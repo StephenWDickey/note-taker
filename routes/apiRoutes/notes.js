@@ -10,13 +10,12 @@ const {v4: uuid } = require('uuid');
 
 
 ////////////////////////////////////////////////
-// use this for testing routes http://localhost:3001/api/notes
-// remember we have to link these routes to the server.js file!
+
 
 // we create a get request for /notes endpoint
 router.get ('/notes', function (req, res) {
     
-    console.log('get request succesful');
+    console.log('get request sent for /notes endpoint');
 
     res.json({
         message: "success!"
@@ -26,9 +25,10 @@ router.get ('/notes', function (req, res) {
 
 
 // we create post request for /notes endpoint
+// remember to use "key" : "value" syntax in Insomnia for testing
 router.post ('/notes', function(req, res) {
 
-    console.log('post request successful');
+    console.log('post request send for /notes endpoint');
 
     res.json({
         message: "success!"
@@ -41,7 +41,7 @@ router.post ('/notes', function(req, res) {
 // /notes/:id
 router.delete('/notes/:id', function(req, res) {
 
-    console.log('delete request routed');
+    console.log('delete request');
 
     res.json({
 
@@ -52,5 +52,7 @@ router.delete('/notes/:id', function(req, res) {
 });
 
 
-// we must export this file so we can use it!
+// use this for testing routes http://localhost:3001/api/notes
+// remember we have to link these routes to the server.js file!
+// we must export this file so we can use it
 module.exports = router;

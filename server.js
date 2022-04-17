@@ -3,7 +3,11 @@ const express = require('express');
 // to give each note a uniqe id we can use the uuid module!
 
 // we need to import our api routes!
-const apiRoutes = require('./routes/apiRoutes/notes.js');
+// we can link to the dir that holds them
+const apiRoutes = require('./routes/apiRoutes');
+
+// import html routes
+const htmlRoutes = require('./routes/htmlRoutes');
 
 ////////////////////////////////////////////////////
 
@@ -33,6 +37,9 @@ app.use(express.static('public'));
 
 // we use our api routes
 app.use('/api', apiRoutes);
+
+// and our html routes
+app.use('/', htmlRoutes);
 
 //////////////////////////////////////////////////////////////
 
