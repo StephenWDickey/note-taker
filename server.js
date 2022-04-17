@@ -9,6 +9,10 @@ const apiRoutes = require('./routes/apiRoutes');
 // import html routes
 const htmlRoutes = require('./routes/htmlRoutes');
 
+const fs = require('fs');
+
+const path = require('path');
+
 ////////////////////////////////////////////////////
 
 

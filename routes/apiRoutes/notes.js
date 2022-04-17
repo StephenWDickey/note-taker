@@ -5,6 +5,11 @@ const fs = require('fs');
 // we import router function of express for pathing
 const router = require('express').Router();
 
+
+// gotta import our javascript functions!
+const { currentNotes, addNote } = require('../../lib/notes');
+
+
 // we import uuid module to create unique ids for each note
 const {v4: uuid } = require('uuid');
 
@@ -17,8 +22,13 @@ router.get ('/notes', function (req, res) {
     
     console.log('get request sent for /notes endpoint');
 
+    // place our function in a variable
+    const notes = currentNotes();
+
     res.json({
-        message: "success!"
+        message: "success!",
+        // retrieve variable in body of json object
+        body: notes
     })
 
 });
@@ -30,8 +40,18 @@ router.post ('/notes', function(req, res) {
 
     console.log('post request sent for /notes endpoint');
 
+    // we want to send data, so we should use our addNote() function
+    // but what are we sending? an object with data
+    // let's define that object
+    // and remember that the body is req.body
+    const newNote = req.body;
+    
+    addNote(newNote);
+  
     res.json({
-        message: "success!"
+        message: "success!",
+        // send our response in body
+        body: newNote
     })
 
 });
