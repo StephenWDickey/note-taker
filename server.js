@@ -2,6 +2,8 @@
 const express = require('express');
 // to give each note a uniqe id we can use the uuid module!
 
+// we need to import our api routes!
+const apiRoutes = require('./routes/apiRoutes/notes.js');
 
 ////////////////////////////////////////////////////
 
@@ -11,6 +13,7 @@ const PORT = process.env.PORT || 3001;
 
 // we put express function in a variable so we can chain methods to it!
 const app = express();
+
 
 
 //////////////////////////////////////////////////////
@@ -28,7 +31,8 @@ app.use(express.static('public'));
 
 //////////////////////////////////////////////////////////////
 
-
+// we use our api routes
+app.use('/api', apiRoutes);
 
 //////////////////////////////////////////////////////////////
 
