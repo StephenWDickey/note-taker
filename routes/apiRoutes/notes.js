@@ -6,7 +6,7 @@ const fs = require('fs');
 const router = require('express').Router();
 
 // we import uuid module to create unique ids for each note
-const uuid = require('uuid');
+const { v4: uuidv4 } = require('uuid');
 
 
 ////////////////////////////////////////////////
@@ -47,7 +47,7 @@ router.post ('/notes', function(req, res) {
 
     let newNote = req.body;
 
-    newNote.id = uuid();
+    newNote.id = uuidv4();
 
     // we read notes file and take data, push new note to data
     fs.readFile("./db/db.json", "utf8", function(err, data) {
@@ -72,7 +72,7 @@ router.post ('/notes', function(req, res) {
 // we create delete request based on note id with endpoint:
 // /notes/:id
 // Deletes notes - removes from db.json and re-writes to db.json
-router.delete("/api/notes/:id", function(req, res) {
+router.delete("/notes/:id", function(req, res) {
 
     // we use req.params and add id parameter
     const id = req.params.id
@@ -98,8 +98,12 @@ router.delete("/api/notes/:id", function(req, res) {
             if (err) {
                 throw (err); 
             }
-            console.log("note deleted.");
-            
+            else {
+                
+                console.log("note deleted.");
+                res.redirect('/notes');
+            }
+
         })
     })
 
