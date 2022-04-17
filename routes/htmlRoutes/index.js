@@ -27,7 +27,7 @@ router.get('/', function (req, res) {
 });
 
 
-router.get('/', function (req, res) {
+router.get('/notes', function (req, res) {
     console.log ('get request sent for notes.html');
     res.sendFile(path.join(__dirname, '../../public/notes.html'))
 });

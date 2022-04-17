@@ -28,7 +28,7 @@ router.get ('/notes', function (req, res) {
 // remember to use "key" : "value" syntax in Insomnia for testing
 router.post ('/notes', function(req, res) {
 
-    console.log('post request send for /notes endpoint');
+    console.log('post request sent for /notes endpoint');
 
     res.json({
         message: "success!"
